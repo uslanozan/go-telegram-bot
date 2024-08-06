@@ -23,14 +23,14 @@ Bu proje, **Telegram Bot API**'sini kullanarak **Go** programlama dili ile bir T
    git clone https://github.com/uslanozan/go-telegram-bot.git
    cd go-telegram-bot
 
-2.Gerekli Bağımlılıkları yükleyin
+2. Gerekli bağımlılıkları yükleyin:
    ```bash
    go mod tidy
 
-3.Projeyi çalıştırın:
+3. Projeyi çalıştırın:
    ```bash
    go run main.go
 
-4.Bot token'ınızı girin
+4.. Bot token'ınızı girin:
    ```bash
-   Enter Bot Token: YOUR_TELEGRAM_BOT_API_TOKEN
+   Enter Bot Token: YOUR_TELEGRAM_BOT_API_TOKEN 
