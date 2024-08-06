@@ -31,6 +31,6 @@ Bu proje, **Telegram Bot API**'sini kullanarak **Go** programlama dili ile bir T
    ```bash
    go run main.go
 
-4.. Bot token'ınızı girin:
+4. Bot token'ınızı girin:
    ```bash
    Enter Bot Token: YOUR_TELEGRAM_BOT_API_TOKEN 
