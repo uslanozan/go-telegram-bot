@@ -1,3 +1,1 @@
-{"username":"uslanozan","user_id":5599764898,"text":"Sa","group_id":""}
-{"username":"uslanozan","user_id":5599764898,"text":"Barışın amınakoyim","group_id":""}
-{"username":"uslanozan","user_id":5599764898,"text":"Cc yapmayın","group_id":""}
+
