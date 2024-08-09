@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"regexp"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -16,7 +17,27 @@ type Message struct {
 	GroupID  string `json:"group_id"`
 }
 
+func joinTelegram(message string) (bool, []string) {
+
+	//* hem t.me/ORNEKLINK hem de https://t.me/ORNEKLINK
+	pattern := `(?:https://)?t\.me/([a-zA-Z0-9_]+)`
+
+	re := regexp.MustCompile(pattern)
+
+	//* -1 dememizin sebebi text içerisindeki tüm linkleri toplasın diye
+	telegramLinks := re.FindAllString(message, -1)
+
+	if len(telegramLinks) > 0 {
+		return true, telegramLinks
+	} else {
+		return false, nil
+	}
+
+}
+
 func main() {
+
+
 	// Output file açma ve hata kontrolü
 	outputFile, err := os.OpenFile("output.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
@@ -24,7 +45,6 @@ func main() {
 	}
 	defer outputFile.Close()
 
-	//TODO: TOKEN'I GÜVENLİK AÇISINDAN KODUN İÇİNE GÖMME DÜZELT
 	var botToken string
 	fmt.Print("Enter Bot Token: ")
 	fmt.Scan(&botToken)
@@ -58,6 +78,26 @@ func main() {
 			GroupID:  update.Message.MediaGroupID,
 		}
 
+		isLink, links := joinTelegram(msgStruct.Text)
+
+		if isLink {
+
+			//? txt for telegram links
+			linkFile, err := os.OpenFile("telegram_links.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+			if err != nil {
+				log.Fatalf("Failed to open output file: %v", err)
+			}
+			
+			fmt.Println("Telegram links found:")
+
+			for _, link := range links {
+				fmt.Println(link)
+				linkFile.WriteString(link + "\n")
+			}
+			linkFile.Close()
+
+		}
+
 		// JSON formatına dönüştürme
 		msgJSON, err := json.Marshal(msgStruct)
 		if err != nil {
@@ -70,18 +110,6 @@ func main() {
 		if err != nil {
 			log.Printf("Failed to write message to output file: %v", err)
 		}
-
-		/* //! BURADA MESAJA CEVAP OLUŞTURUYOR VE GÖNDERİYOR GEREK YOK
-		// Cevap mesajı oluşturma
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
-		msg.ReplyToMessageID = update.Message.MessageID
-
-		// Mesajı gönderme
-		if _, err := bot.Send(msg); err != nil {
-			log.Printf("Failed to send message: %v", err)
-		}
-
-		*/
 
 	}
 }
